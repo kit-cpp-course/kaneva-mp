@@ -1,16 +1,20 @@
+//
+//  Lists.cpp
+//  m1
+
+
+#include "Lists.hpp"
 #include <vector>
-#include "List.hpp"
 #include "point.hpp"
 
 using namespace std;
 
-void List :: insert (double a, double b) {
+void Lists :: insert (double a, double b) {
     point * tmp = new point;
     tmp->setCoordinates(a, b);
     
     if ( is_empty() ) {
-        tmp->next = tmp;
-        tmp->prev = tmp;
+        tmp->next = tmp->prev = tmp;
     }
     else {
         tmp->next = cur->next;
@@ -18,14 +22,16 @@ void List :: insert (double a, double b) {
         tmp->prev = cur;
         tmp->next->prev = tmp;
     }
-    cur = tmp; 
-
+    cur = tmp;
+    points[size] = tmp;
     size++;
 }
 
-void List :: insert (double *a, int n) {
+void Lists :: insert (double *a, int n) {
     point * tail = 0;
-    
+    if (!points) {
+        points = new point * [n];
+    }
     if ( is_empty() ) {
         for ( int i = 0; i < n; i += 2 ) {
             insert (a[i], a[i + 1]);
@@ -40,7 +46,27 @@ void List :: insert (double *a, int n) {
     }
 }
 
-point * List :: find (double a, double b) {
+void Lists :: insert (point ** source, int n) {
+    point * tail = 0;
+    if (!points) {
+        points = new point * [n];
+    }
+    if ( is_empty() ) {
+        for ( int i = 0; i < n; i += 1 ) {
+            insert (source[i]->getX(), source[i]->getY());
+            
+            if ( i == 0 )
+                tail = cur;
+        }
+        //замыкаем список
+        cur->next = tail;
+        cur->next->prev = cur;
+        cur = cur->next;
+    }
+}
+
+
+point * Lists :: find (double a, double b) {
     point * tmp = cur;
     if ( !is_empty() ) {
         do {
@@ -53,9 +79,9 @@ point * List :: find (double a, double b) {
     return 0;
 }
 
-void List :: delete_node (double a, double b) {
+void Lists :: delete_node (double a, double b) {
     point * tmp = find (a, b);
-    if (tmp) { 
+    if (tmp) {
         if ( tmp == cur ) cur = cur->prev;
         
         tmp->prev->next = tmp->next;
@@ -65,6 +91,12 @@ void List :: delete_node (double a, double b) {
     }
 }
 
+Lists::Lists (Lists * source) : Lists() {
+    insert(source->points, source->size);
+}
 
-
-
+Lists * Lists::copyList() {
+    Lists * result = new Lists;
+    result->insert(points, size);
+    return result;
+}
