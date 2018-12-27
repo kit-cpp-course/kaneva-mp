@@ -1,36 +1,43 @@
 //
-//  List.hpp
+//  Lists.hpp
 //  m1
 //
 
 #pragma once
-#include <vector>
 #include "point.hpp"
 
-using namespace std;
-/*
- * Класс, описывающий кольцевой двухсвязный список
- */
-class List {
-
+class Lists {
+    friend class trianglation;
+    /*
+     * Указатель на текущий элемент (вершину)
+     */
+    point * cur = 0;
+    /*
+     * Все точки
+     */
+    point ** points = 0;
+    
 public:
     /*
      * Количество элементов списка (вершин)
      */
     int size;
     /*
-     * Указатель на текущий элемент (вершину)
-     */
-    point * cur;
-    
-    /*
      * Конструктор пустого списка
      */
-    List (int s = 0, point * tmp = 0): size(s), cur(tmp) {}
+    Lists (int s = 0, point * tmp = 0): size(s), cur(tmp) {}
+    /*
+     * Создание списка на основе существующего
+     */
+    Lists (Lists * source);
+    /*
+     * Вставка элемента в список
+     */
+    void insert (point ** points, int n);
     /*
      * Деструктор
      */
-    ~List() { delete [] cur; }
+    ~Lists() { delete [] cur; }
     /*
      * Проверка пуст ли список
      */
@@ -55,6 +62,10 @@ public:
      * Удаление вершины с указанными координатами
      */
     void delete_node (double a, double b);
+    /*
+     * Копирование списка
+     */
+    Lists * copyList();
     
 };
 
