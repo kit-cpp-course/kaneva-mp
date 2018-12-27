@@ -4,7 +4,7 @@
 
 #include "point.hpp"
 #include "triangle.hpp"
-#include "List.hpp"
+#include "Lists.hpp"
 #include "trianglation.hpp"
 
 using namespace std;
@@ -35,7 +35,11 @@ type trianglation::direction () {
     return error;
 }
 
-void trianglation::cuttingEar(vector<triangle> & triangles, List * list) {
+trianglation::~trianglation() {
+    delete [] first; delete [] second; delete [] third;
+}
+
+void trianglation::cuttingEar(vector<triangle> & triangles, Lists * list) {
     triangle t(point(first->getX(), first->getY()),
                point(second->getX(), second->getY()),
                point(third->getX(), third->getY()));
@@ -43,11 +47,11 @@ void trianglation::cuttingEar(vector<triangle> & triangles, List * list) {
     list->delete_node(second->getX(), second->getY());
 }
 
-bool trianglation::earCheck(List * list) {
+bool trianglation::earCheck(Lists * list) {
     return triangle::is_in_triangle(first, second, third, list->cur);
 }
 
-void trianglation::vertexCheckNCut(vector<triangle> & triangles, List * list, type cond)
+void trianglation::vertexCheckNCut(vector<triangle> & triangles, Lists * list, type cond)
 {
     double prod = triangle::cross_prod(first, second, third);
     if ( ( cond == clockwise && prod < 0 ) || ( cond == count_clockwise && prod > 0 ) ) {
@@ -68,14 +72,15 @@ vector <triangle> trianglation::triangulate() {
     
     type cond = direction();
     
-        while (list->size > 3) {
-            vertexCheckNCut(triangles, list, cond);
-        }
-        if (list->size == 3) {
-            triangle t(point(first->getX(), first->getY()),
-                       point(second->getX(), second->getY()),
-                       point(third->getX(), third->getY()));
-            triangles.insert(triangles.end(), t);
-        }
-        return triangles;
+    while (list->size > 3) {
+        vertexCheckNCut(triangles, list, cond);
+    }
+    if (list->size == 3) {
+        triangle t(point(first->getX(), first->getY()),
+                   point(second->getX(), second->getY()),
+                   point(third->getX(), third->getY()));
+        triangles.insert(triangles.end(), t);
+    }
+    return triangles;
 }
+
