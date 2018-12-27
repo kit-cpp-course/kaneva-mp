@@ -1,15 +1,13 @@
 //
-//  ClassFile.hpp
+//  File.hpp
 //  m1
 
 #pragma once
-#include "ClassTriangulation.hpp"
+#include "Triangulations.hpp"
 /*
  * Абстрактный класс, записывающий результат триангуляции в файл
  */
-class ClassFile {
+class File {
 public:
-    virtual void writing(ClassTriangulation & triangles) = 0;
+    virtual void writing(Triangulations & triangles) = 0;
 };
-
-
