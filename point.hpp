@@ -4,6 +4,7 @@
 //
 
 #pragma once
+
 /*
  * Класс, описывающий точку
  */
@@ -35,3 +36,4 @@ public:
     void setCoordinates (double xs, double ys) { x = xs; y = ys; }
     
 };
+
