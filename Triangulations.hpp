@@ -1,5 +1,4 @@
-//
-//  ClassTriangulation.hpp
+//  Triangulations.hpp
 //  m1
 //
 #pragma once
@@ -8,7 +7,7 @@
 /*
  * Абстрактный класс, выполняющий триангуляцию
  */
-class ClassTriangulation {
+class Triangulations {
 public:
     virtual std::vector<triangle> triangulate() = 0;
 };
