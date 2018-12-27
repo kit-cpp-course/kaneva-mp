@@ -1,15 +1,14 @@
 
-
 #pragma once
 #include "triangle.hpp"
-#include "ClassTriangulation.hpp"
+#include "Triangulations.hpp"
 #include <vector>
 #include <fstream>
-#include "ClassFile.hpp"
+#include "File.hpp"
 /*
  * Класс, создающий файл и записывающий в него данные
  */
-class fileEditor: public ClassFile {
+class fileEditor: public File {
     /*
      * Файл записи
      */
@@ -23,8 +22,7 @@ public:
     /*
      * Запись в файл разбиения
      */
-    void writing(ClassTriangulation & triangles);
-
+    void writing(Triangulations & triangles);
+    
+    ~fileEditor();
 };
-
-
