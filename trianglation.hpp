@@ -6,9 +6,9 @@
 #pragma once
 
 #include "point.hpp"
-#include "List.hpp"
+#include "Lists.hpp"
 #include "triangle.hpp"
-#include "ClassTriangulation.hpp"
+#include "Triangulations.hpp"
 /*
  * Направления обхода многоугольника
  */
@@ -17,11 +17,11 @@ typedef enum { clockwise, count_clockwise, error } type;
  * Класс, реализующий триаcнгуляцию
  */
 
-class trianglation: public ClassTriangulation {
+class trianglation: public Triangulations {
     /*
      *  Список вершин многоугольника
      */
-    List * list;
+    Lists * list;
     /*
      * Три первые, подряд идущие, вершины
      */
@@ -29,21 +29,22 @@ class trianglation: public ClassTriangulation {
     /*
      * Проверка каждой вершины на выпуклость
      */
-    void vertexCheckNCut(vector<triangle> & triangles, List * list, type cond);
+    void vertexCheckNCut(std::vector<triangle> & triangles, Lists * list, type cond);
     /*
      * Отрезание уха
      */
-    void cuttingEar(vector<triangle> & triangles, List * list);
+    void cuttingEar(std::vector<triangle> & triangles, Lists * list);
     /*
      * Проверка, является ли вершмина ухом
      */
-    bool earCheck(List * list);
+    bool earCheck(Lists * list);
     
 public:
     /*
      * Конструктор, заполняющий список вершин переданными значениями
      */
-    trianglation(List * list) : list(list) {
+    trianglation(Lists * list) {
+        this->list = list->copyList();
         first = list->cur;
         second = list->cur->next;
         third = list->cur->next->next;
@@ -51,8 +52,7 @@ public:
     /*
      * Деструктор
      */
-    ~trianglation() {   delete [] list; delete [] first;
-                        delete [] second; delete [] third;  }
+    ~trianglation();
     /*
      * Возвращает направление обхода многоугольника
      */
@@ -65,4 +65,5 @@ public:
     std::vector<triangle> triangulate (); //триангуляция
     
 };
+
 
